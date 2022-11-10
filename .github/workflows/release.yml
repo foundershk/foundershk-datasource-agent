@@ -6,4 +6,9 @@ on:
     tags:
       - "v*"
 permissions:
-  contents: wri
+  contents: write
+  packages: write
+
+jobs:
+  goreleaser:
+    runs-on: ubu
