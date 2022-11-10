@@ -2,4 +2,8 @@ name: goreleaser
 
 on:
   push:
-    # run only ag
+    # run only against tags on main
+    tags:
+      - "v*"
+permissions:
+  contents: wri
