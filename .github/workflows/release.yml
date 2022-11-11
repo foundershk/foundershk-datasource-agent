@@ -11,4 +11,6 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: ubu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/c
