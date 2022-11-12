@@ -17,4 +17,4 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set GIT_LAST_COMMIT_DATE
-  
+        run: echo "GIT_LAST_COMMIT_DATE=$(git log -1 --date=iso
