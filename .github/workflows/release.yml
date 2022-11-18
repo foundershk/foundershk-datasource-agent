@@ -21,4 +21,6 @@ jobs:
       # Forces goreleaser to use the correct previous tag for the changelog
       - name: Set GORELEASER_PREVIOUS_TAG
         run: echo "GORELEASER_PREVIOUS_TAG=$(git tag -l --sort=-version:refname | grep -E '^v.*' | head -n 2 | tail -1)" >> $GITHUB_ENV
-      - run: git fetch --
+      - run: git fetch --force --tags
+      - uses: actions/setup-go@v3
+ 
