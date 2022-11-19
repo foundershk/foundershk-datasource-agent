@@ -28,4 +28,6 @@ jobs:
           cache: true
       # setup docker buildx
       - name: Set up QEMU
-        uses:
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        use
