@@ -26,4 +26,6 @@ jobs:
         with:
           go-version: ">=1.19.5"
           cache: true
- 
+      # setup docker buildx
+      - name: Set up QEMU
+        uses:
