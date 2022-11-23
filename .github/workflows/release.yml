@@ -37,4 +37,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - uses: goreleaser/goreleas
+      - uses: goreleaser/goreleaser-action@v4
+        with:
+          distribution
