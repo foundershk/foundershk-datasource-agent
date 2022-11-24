@@ -39,4 +39,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - uses: goreleaser/goreleaser-action@v4
         with:
-          distribution
+          distribution: goreleaser
+          version: '1.17.0'
+       
