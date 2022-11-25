@@ -43,4 +43,4 @@ jobs:
           version: '1.17.0'
           args: release --clean --debug
         env:
-          
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
