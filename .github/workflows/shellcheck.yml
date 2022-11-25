@@ -3,4 +3,7 @@ on:
   push
 jobs:
   shellcheck:
-    runs-on: ubun
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+ 
