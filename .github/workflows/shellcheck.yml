@@ -1,1 +1,6 @@
-name: shell
+name: shellcheck
+on:
+  push
+jobs:
+  shellcheck:
+    runs-on: ubun
