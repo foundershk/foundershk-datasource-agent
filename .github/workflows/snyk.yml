@@ -1,0 +1,4 @@
+name: Snyk Monitor Scanning
+on:
+ release:
+   types: [publishe
