@@ -5,4 +5,8 @@ on:
  push:
     branches:
       - 'main'
- workflow_
+ workflow_dispatch:
+
+jobs:
+  snyk-scan-ci:
+    uses: 'grafana/sec
