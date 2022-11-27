@@ -9,4 +9,4 @@ on:
 
 jobs:
   snyk-scan-ci:
-    uses: 'grafana/sec
+    uses: 'grafana/security-github-actions/.github/workflows/snyk_moni
