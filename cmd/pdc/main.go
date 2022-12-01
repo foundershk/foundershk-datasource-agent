@@ -87,3 +87,56 @@ func tryGetOpenSSHVersion() string {
 }
 
 func main() {
+	sshConfig := ssh.DefaultConfig()
+	mf := &mainFlags{}
+	pdcClientCfg := &pdc.Config{}
+
+	usageFn, err := parseFlags(mf.RegisterFlags, sshConfig.RegisterFlags, pdcClientCfg.RegisterFlags)
+	if err != nil {
+		fmt.Println("cannot parse flags")
+		os.Exit(1)
+	}
+
+	sshConfig.Args = os.Args[1:]
+	sshConfig.LogLevel, err = logLevelToSSHLogLevel(mf.LogLevel)
+	if err != nil {
+		usageFn()
+		fmt.Printf("setting log level: %s\n", err)
+		os.Exit(1)
+	}
+
+	logger := setupLogger(mf.LogLevel)
+
+	level.Info(logger).Log("msg", "PDC agent info",
+		"version", fmt.Sprintf("v%s", version),
+		"commit", commit,
+		"date", date,
+		"ssh version", tryGetOpenSSHVersion(),
+		"os", runtime.GOOS,
+		"arch", runtime.GOARCH,
+	)
+
+	if mf.PrintHelp {
+		usageFn()
+		return
+	}
+
+	if inLegacyMode() {
+		sshConfig.LegacyMode = true
+		err = runLegacyMode(sshConfig)
+		if err != nil {
+			fmt.Printf("error: %s", err)
+			os.Exit(1)
+		}
+		return
+	}
+
+	apiURL, gatewayURL, err := createURLsFromCluster(mf.Cluster, mf.Domain)
+	if err != nil {
+		level.Error(logger).Log("err", err)
+		os.Exit(1)
+	}
+
+	pdcClientCfg.URL = apiURL
+	sshConfig.PDC = *pdcClientCfg
+	sshConfig.URL = gatewayURL
