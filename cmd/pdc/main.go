@@ -196,3 +196,78 @@ func run(logger log.Logger, sshConfig *ssh.Config, pdcConfig *pdc.Config) error 
 }
 
 func createURLsFromCluster(cluster string, domain string) (api *url.URL, gateway *url.URL, err error) {
+	apiURL := fmt.Sprintf("https://private-datasource-connect-api-%s.%s", cluster, domain)
+	gatewayURL := fmt.Sprintf("private-datasource-connect-%s.%s", cluster, domain)
+
+	api, err = url.Parse(apiURL)
+	if err != nil {
+		return
+	}
+
+	gateway, err = url.Parse(gatewayURL)
+	return
+}
+
+// parseFlags creates a flagset, registers all given flags, and parses. It
+// returns the flagset's usage function and the parsing error.
+func parseFlags(registerers ...func(fs *flag.FlagSet)) (func(), error) {
+	fs := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
+
+	fs.Usage = func() {
+		prog := os.Args[0]
+		fmt.Fprintf(fs.Output(), `Usage of %s:
+`, prog)
+		fs.PrintDefaults()
+		fmt.Fprintf(fs.Output(), `
+
+If pdc-agent is run with SSH flags, it will pass all arguments directly through to the "ssh" binary. This is deprecated behaviour.
+
+Run %s <command> -h for more information
+`, prog)
+	}
+
+	for _, r := range registerers {
+		r(fs)
+	}
+
+	return fs.Usage, fs.Parse(os.Args[1:])
+}
+
+func inLegacyMode() bool {
+	args := os.Args[1:]
+
+	for _, a := range args {
+		if a == "-p" || a == "-i" || a == "-R" || a == "-o" {
+			return true
+		}
+	}
+
+	return false
+}
+
+func runLegacyMode(sshConfig *ssh.Config) error {
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	logger := log.NewLogfmtLogger(os.Stdout)
+	sshClient := ssh.NewClient(sshConfig, logger, nil)
+	// Start the ssh client
+	err := services.StartAndAwaitRunning(ctx, sshClient)
+	if err != nil {
+		level.Error(logger).Log("msg", fmt.Sprintf("cannot start ssh client: %s", err))
+		return err
+	}
+	// Wait for the ssh client to exit
+	_ = sshClient.AwaitTerminated(context.Background())
+	return nil
+}
+
+// setupLogger with level filter.
+func setupLogger(lvl string) log.Logger {
+	logger := log.NewLogfmtLogger(os.Stdout)
+	logger = level.NewFilter(logger, level.Allow(level.ParseDefault(lvl, level.DebugValue())))
+	logger = log.With(logger, "caller", log.DefaultCaller)
+	logger = log.With(logger, "ts", log.DefaultTimestamp)
+
+	return logger
+}
