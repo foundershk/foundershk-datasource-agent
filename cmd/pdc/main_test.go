@@ -7,4 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLogLe
+func TestLogLevelToSSHLogLevel(t *testing.T) {
+	t.Parallel()
+
+	cases :
