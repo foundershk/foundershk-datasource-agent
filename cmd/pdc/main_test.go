@@ -10,4 +10,6 @@ import (
 func TestLogLevelToSSHLogLevel(t *testing.T) {
 	t.Parallel()
 
-	cases :
+	cases := []struct {
+		description   string
+		level         
