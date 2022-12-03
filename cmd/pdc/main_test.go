@@ -12,4 +12,7 @@ func TestLogLevelToSSHLogLevel(t *testing.T) {
 
 	cases := []struct {
 		description   string
-		level         
+		level         string
+		expectedLevel int
+		expectedErr   error
+	}
