@@ -15,4 +15,7 @@ func TestLogLevelToSSHLogLevel(t *testing.T) {
 		level         string
 		expectedLevel int
 		expectedErr   error
-	}
+	}{
+		{
+			description:   "error becomes 0",
+			level:
