@@ -22,4 +22,5 @@ func TestLogLevelToSSHLogLevel(t *testing.T) {
 			expectedLevel: 0,
 		},
 		{
-			descr
+			description:   "warn becomes 0",
+			level:         
