@@ -34,4 +34,7 @@ func TestLogLevelToSSHLogLevel(t *testing.T) {
 		{
 			description:   "debug becomes 3",
 			level:         "debug",
-			expectedLevel:
+			expectedLevel: 3,
+		},
+		{
+			description: "unknown level, should r
