@@ -40,4 +40,9 @@ func TestLogLevelToSSHLogLevel(t *testing.T) {
 			description: "unknown level, should return error",
 			level:       "unknown",
 			expectedErr: errors.New("invalid log level: unknown"),
-	
+		},
+	}
+
+	for _, tt := range cases {
+		tt := tt
+		t.Run(tt.de
