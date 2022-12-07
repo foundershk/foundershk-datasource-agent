@@ -45,4 +45,7 @@ func TestLogLevelToSSHLogLevel(t *testing.T) {
 
 	for _, tt := range cases {
 		tt := tt
-		t.Run(tt.de
+		t.Run(tt.description, func(t *testing.T) {
+			t.Parallel()
+
+			a
