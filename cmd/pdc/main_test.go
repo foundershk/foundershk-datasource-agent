@@ -39,4 +39,5 @@ func TestLogLevelToSSHLogLevel(t *testing.T) {
 		{
 			description: "unknown level, should return error",
 			level:       "unknown",
-			expecte
+			expectedErr: errors.New("invalid log level: unknown"),
+	
