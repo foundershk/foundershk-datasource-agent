@@ -53,4 +53,8 @@ func TestLogLevelToSSHLogLevel(t *testing.T) {
 			if tt.expectedErr != nil {
 				assert.Equal(t, tt.expectedErr, err)
 			} else {
-				assert.Equal(t, tt.expecte
+				assert.Equal(t, tt.expectedLevel, actual)
+			}
+		})
+	}
+}
