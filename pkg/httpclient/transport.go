@@ -7,4 +7,5 @@ import (
 )
 
 // UserAgentTransport provides a transport with a set user-agent. It wraps
-// http.DefaultTran
+// http.DefaultTransport if rt is nil
+func UserAgentTransport(rt http.RoundT
