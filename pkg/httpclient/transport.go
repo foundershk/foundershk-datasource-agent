@@ -10,4 +10,7 @@ import (
 // http.DefaultTransport if rt is nil
 func UserAgentTransport(rt http.RoundTripper) http.RoundTripper {
 	if rt == nil {
-	
+		rt = http.DefaultTransport
+	}
+
+	ua := "pdc-httpc
