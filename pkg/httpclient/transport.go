@@ -8,4 +8,6 @@ import (
 
 // UserAgentTransport provides a transport with a set user-agent. It wraps
 // http.DefaultTransport if rt is nil
-func UserAgentTransport(rt http.RoundT
+func UserAgentTransport(rt http.RoundTripper) http.RoundTripper {
+	if rt == nil {
+	
