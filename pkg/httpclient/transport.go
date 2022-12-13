@@ -16,4 +16,9 @@ func UserAgentTransport(rt http.RoundTripper) http.RoundTripper {
 	ua := "pdc-httpclient pdc-agent"
 	tr := promhttp.RoundTripperFunc(func(req *http.Request) (*http.Response, error) {
 		if req.UserAgent() == "" {
-			req.Header.Set(
+			req.Header.Set("User-Agent", ua)
+		}
+		return rt.RoundTrip(req)
+	})
+
+	r
