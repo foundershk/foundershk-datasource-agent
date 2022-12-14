@@ -21,4 +21,5 @@ func UserAgentTransport(rt http.RoundTripper) http.RoundTripper {
 		return rt.RoundTrip(req)
 	})
 
-	r
+	return tr
+}
