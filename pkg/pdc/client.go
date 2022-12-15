@@ -151,3 +151,59 @@ func (c *pdcClient) SignSSHKey(ctx context.Context, key []byte) (*SigningRespons
 	if err != nil {
 		return nil, err
 	}
+
+	return sr, nil
+}
+
+func (c *pdcClient) call(ctx context.Context, method, rpath string, params map[string]string, body map[string]string) ([]byte, error) {
+
+	url := *c.cfg.URL
+	url.Path = path.Join(url.Path, rpath)
+
+	q := url.Query()
+	for k, v := range params {
+		q.Add(k, v)
+	}
+	url.RawQuery = q.Encode()
+
+	jsonB, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequestWithContext(ctx, method, url.String(), bytes.NewBuffer(jsonB))
+	if err != nil {
+		level.Error(c.logger).Log("msg", "error creating PDC API request", "err", err)
+		return nil, ErrInternal
+	}
+
+	// base64 id:token for auth
+	b := []byte{}
+	buf := bytes.NewBuffer(b)
+	encoder := base64.NewEncoder(base64.StdEncoding, buf)
+	_, werr := encoder.Write([]byte(c.cfg.HostedGrafanaID + ":" + c.cfg.Token))
+	err = encoder.Close()
+	if werr != nil || err != nil {
+		level.Error(c.logger).Log("msg", "error encoding Authorization header", "err", err)
+		return nil, ErrInternal
+	}
+
+	req.Header.Add("Authorization", "Basic "+buf.String())
+
+	for header, value := range c.cfg.DevHeaders {
+		req.Header.Add(header, value)
+	}
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		level.Error(c.logger).Log("msg", "error making request to PDC API", "err", err)
+		return nil, ErrInternal
+	}
+	defer resp.Body.Close()
+	respB, err := io.ReadAll(resp.Body)
+	if err != nil {
+		level.Error(c.logger).Log("msg", "error reading response from PDC API", "err", err)
+		return nil, ErrInternal
+	}
+	switch resp.StatusCode {
+	case http.StatusOK:
