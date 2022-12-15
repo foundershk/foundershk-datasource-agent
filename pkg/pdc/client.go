@@ -96,3 +96,58 @@ func (sr *SigningResponse) UnmarshalJSON(data []byte) error {
 
 	cert, ok := pk.(*ssh.Certificate)
 	if !ok {
+		return errors.New("public key is not an SSH certificate")
+	}
+
+	sr.KnownHosts = []byte(target.KnownHosts)
+	sr.Certificate = *cert
+	return nil
+}
+
+// NewClient returns a new Client
+func NewClient(cfg *Config, logger log.Logger) (Client, error) {
+	if cfg.URL == nil {
+		return nil, errors.New("-api-url cannot be nil")
+	}
+
+	// If the value has not been set for testing.
+	if cfg.SignPublicKeyEndpoint == "" {
+		cfg.SignPublicKeyEndpoint = "/pdc/api/v1/sign-public-key"
+	}
+
+	rc := retryablehttp.NewClient()
+	if cfg.RetryMax != 0 {
+		rc.RetryMax = cfg.RetryMax
+	}
+	rc.Logger = &logAdapter{logger}
+	rc.CheckRetry = retryablehttp.ErrorPropagatedRetryPolicy
+	hc := rc.StandardClient()
+
+	hc.Transport = httpclient.UserAgentTransport(hc.Transport)
+
+	return &pdcClient{
+		cfg:        cfg,
+		httpClient: hc,
+		logger:     logger,
+	}, nil
+}
+
+type pdcClient struct {
+	cfg        *Config
+	httpClient *http.Client
+	logger     log.Logger
+}
+
+func (c *pdcClient) SignSSHKey(ctx context.Context, key []byte) (*SigningResponse, error) {
+	resp, err := c.call(ctx, http.MethodPost, c.cfg.SignPublicKeyEndpoint, nil, map[string]string{
+		"publicKey": string(key),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	sr := &SigningResponse{}
+	err = sr.UnmarshalJSON(resp)
+	if err != nil {
+		return nil, err
+	}
