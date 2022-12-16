@@ -2,4 +2,6 @@ package pdc_test
 
 import (
 	"encoding/json"
-	"testing
+	"testing"
+
+	"github.com/grafana/pdc-agent/pkg/
