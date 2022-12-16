@@ -207,3 +207,39 @@ func (c *pdcClient) call(ctx context.Context, method, rpath string, params map[s
 	}
 	switch resp.StatusCode {
 	case http.StatusOK:
+		return respB, nil
+	case http.StatusUnauthorized:
+		return respB, ErrInvalidCredentials
+	default:
+		level.Error(c.logger).Log("msg", "unknown response from PDC API", "code", resp.StatusCode)
+		return respB, ErrInternal
+	}
+}
+
+type logAdapter struct {
+	l log.Logger
+}
+
+var _ retryablehttp.LeveledLogger = (*logAdapter)(nil)
+
+func (l *logAdapter) Debug(msg string, kv ...interface{}) {
+	keyvals := []interface{}{"msg", msg}
+	keyvals = append(keyvals, kv...)
+	level.Debug(l.l).Log(keyvals...)
+}
+
+func (l *logAdapter) Info(msg string, kv ...interface{}) {
+	keyvals := []interface{}{"msg", msg}
+	keyvals = append(keyvals, kv...)
+	level.Info(l.l).Log(keyvals...)
+}
+func (l *logAdapter) Warn(msg string, kv ...interface{}) {
+	keyvals := []interface{}{"msg", msg}
+	keyvals = append(keyvals, kv...)
+	level.Warn(l.l).Log(keyvals...)
+}
+func (l *logAdapter) Error(msg string, kv ...interface{}) {
+	keyvals := []interface{}{"msg", msg}
+	keyvals = append(keyvals, kv...)
+	level.Error(l.l).Log(keyvals...)
+}
