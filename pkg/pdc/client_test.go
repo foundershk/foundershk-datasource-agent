@@ -8,4 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var
+var cert = `
+-----BEGIN CERTIFICATE-----
+c3N
