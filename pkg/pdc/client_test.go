@@ -10,4 +10,4 @@ import (
 
 var cert = `
 -----BEGIN CERTIFICATE-----
-c3N
+c3NoLWVkMjU1MTktY2VydC12MDFAb3BlbnNzaC5jb20gQUFBQUlITnp
