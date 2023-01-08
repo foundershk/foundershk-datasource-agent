@@ -54,4 +54,6 @@ azl0ZGNvOFFqN0pIcFR0WnFBRm12c1E9PQo=
 
 func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 	testcases := []struct {
-		name        strin
+		name        string
+		wantErr     bool
+		knownHosts  []by
