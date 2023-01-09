@@ -56,4 +56,8 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 	testcases := []struct {
 		name        string
 		wantErr     bool
-		knownHosts  []by
+		knownHosts  []byte
+		certificate string
+	}{
+		{
+			name:       "valid, empty 
