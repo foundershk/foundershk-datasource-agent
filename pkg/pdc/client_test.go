@@ -60,4 +60,6 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 		certificate string
 	}{
 		{
-			name:       "valid, empty 
+			name:       "valid, empty fields",
+			knownHosts: []byte(``),
+			w
