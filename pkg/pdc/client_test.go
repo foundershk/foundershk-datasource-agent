@@ -66,4 +66,7 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 		},
 		{
 			name:    "invalid json",
-			wantErr:
+			wantErr: true,
+		},
+		{
+			name:        "parsing error on cert
