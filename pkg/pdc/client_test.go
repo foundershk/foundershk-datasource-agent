@@ -62,4 +62,8 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 		{
 			name:       "valid, empty fields",
 			knownHosts: []byte(``),
-			w
+			wantErr:    true,
+		},
+		{
+			name:    "invalid json",
+			wantErr:
