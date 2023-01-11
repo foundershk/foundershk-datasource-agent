@@ -77,4 +77,9 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 		{
 			name:        "successful parse",
 			knownHosts:  []byte("kh"),
-			ce
+			certificate: cert,
+			wantErr:     false,
+		},
+	}
+
+	for _, tc
