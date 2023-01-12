@@ -82,4 +82,5 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 		},
 	}
 
-	for _, tc
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T)
