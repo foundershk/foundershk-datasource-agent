@@ -86,4 +86,6 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			result := &pdc.SigningResponse{}
 
-			in := struct
+			in := struct {
+				KnownHosts  string `json:"known_hosts"`
+				Ce
