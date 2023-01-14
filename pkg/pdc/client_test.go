@@ -88,4 +88,6 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 
 			in := struct {
 				KnownHosts  string `json:"known_hosts"`
-				Ce
+				Certificate string `json:"certificate"`
+			}{
+				KnownHosts:
