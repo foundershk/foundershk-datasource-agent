@@ -90,4 +90,5 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 				KnownHosts  string `json:"known_hosts"`
 				Certificate string `json:"certificate"`
 			}{
-				KnownHosts:
+				KnownHosts:  string(tc.knownHosts),
+				Certificate: tc.cert
