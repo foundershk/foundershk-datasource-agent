@@ -94,4 +94,8 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 				Certificate: tc.certificate,
 			}
 			enc, err := json.Marshal(in)
-			assert.NoEr
+			assert.NoError(t, err)
+
+			err = result.UnmarshalJSON(enc)
+
+			if tc.
