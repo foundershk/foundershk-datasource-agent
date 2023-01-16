@@ -98,4 +98,7 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 
 			err = result.UnmarshalJSON(enc)
 
-			if tc.
+			if tc.wantErr {
+				assert.Error(t, err)
+			} else {
+				asse
