@@ -103,4 +103,8 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 			} else {
 				assert.Nil(t, err)
 				assert.NotNil(t, result.KnownHosts)
-				
+				assert.NotNil(t, result.Certificate)
+			}
+		})
+	}
+}
