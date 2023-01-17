@@ -101,4 +101,6 @@ func TestSigningResponse_UnmarshalJSON(t *testing.T) {
 			if tc.wantErr {
 				assert.Error(t, err)
 			} else {
-				asse
+				assert.Nil(t, err)
+				assert.NotNil(t, result.KnownHosts)
+				
