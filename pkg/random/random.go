@@ -5,4 +5,5 @@ import (
 	"math/rand"
 )
 
-// Genera
+// Generates a number between min and max inclusive.
+func Ra
