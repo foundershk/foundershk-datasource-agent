@@ -6,4 +6,6 @@ import (
 )
 
 // Generates a number between min and max inclusive.
-func Ra
+func Range(min, max int) int {
+	if min > max {
+		panic(fmt
