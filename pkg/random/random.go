@@ -15,4 +15,6 @@ func Range(min, max int) int {
 		return min
 	}
 
-	n := 
+	n := min + rand.Intn(max-min+1)
+	return n
+}
