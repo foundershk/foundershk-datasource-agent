@@ -16,4 +16,5 @@ func TestRange(t *testing.T) {
 	t.Run("sanity checks", func(t *testing.T) {
 		t.Parallel()
 
-		assert.
+		assert.Equal(t, 0, Range(0, 0))
+		assert.Equal(t, 1, R
