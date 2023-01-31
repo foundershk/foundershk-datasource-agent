@@ -13,4 +13,7 @@ import (
 func TestRange(t *testing.T) {
 	t.Parallel()
 
-	t.Run("sanity checks"
+	t.Run("sanity checks", func(t *testing.T) {
+		t.Parallel()
+
+		assert.
