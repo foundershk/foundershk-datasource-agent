@@ -10,4 +10,7 @@ import (
 	"pgregory.net/rapid"
 )
 
-func TestRange(
+func TestRange(t *testing.T) {
+	t.Parallel()
+
+	t.Run("sanity checks"
