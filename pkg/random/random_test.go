@@ -6,4 +6,8 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/req
+	"github.com/stretchr/testify/require"
+	"pgregory.net/rapid"
+)
+
+func TestRange(
