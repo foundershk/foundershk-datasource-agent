@@ -20,4 +20,5 @@ func TestRange(t *testing.T) {
 		assert.Equal(t, 1, Range(1, 1))
 
 		require.Eventually(t, func() bool {
-			return 
+			return Range(0, 1) == 0
+		}, 500*time.Millisecond
