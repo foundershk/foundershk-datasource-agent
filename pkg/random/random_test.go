@@ -17,4 +17,7 @@ func TestRange(t *testing.T) {
 		t.Parallel()
 
 		assert.Equal(t, 0, Range(0, 0))
-		assert.Equal(t, 1, R
+		assert.Equal(t, 1, Range(1, 1))
+
+		require.Eventually(t, func() bool {
+			return 
