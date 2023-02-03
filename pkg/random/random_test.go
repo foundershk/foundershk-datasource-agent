@@ -25,4 +25,7 @@ func TestRange(t *testing.T) {
 
 		require.Eventually(t, func() bool {
 			return Range(0, 1) == 1
-		}, 500*t
+		}, 500*time.Millisecond, 50*time.Microsecond)
+	})
+
+	t.
