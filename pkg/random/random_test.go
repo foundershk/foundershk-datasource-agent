@@ -28,4 +28,4 @@ func TestRange(t *testing.T) {
 		}, 500*time.Millisecond, 50*time.Microsecond)
 	})
 
-	t.Run("only generates numbers between the min and
+	t.Run("only generates numbers between the min and max", rapid.MakeCheck(func(t *rapid.T)
