@@ -33,4 +33,8 @@ func TestRange(t *testing.T) {
 		b := rapid.IntRange(0, math.MaxInt-1).Draw(t, "max")
 
 		min := min(a, b)
-		max
+		max := max(a, b)
+
+		n := Range(min, max)
+
+		as
