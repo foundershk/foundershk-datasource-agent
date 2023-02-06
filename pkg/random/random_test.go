@@ -37,4 +37,7 @@ func TestRange(t *testing.T) {
 
 		n := Range(min, max)
 
-		as
+		assert.True(t, n >= min)
+		assert.True(t, n <= max)
+	}))
+}
