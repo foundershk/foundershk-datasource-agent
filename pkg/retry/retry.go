@@ -4,4 +4,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/gr
+	"github.com/grafana/pdc-agent/pkg/random"
+)
+
+type Opts struct {
+	MaxBac
