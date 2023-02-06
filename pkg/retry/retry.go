@@ -8,4 +8,5 @@ import (
 )
 
 type Opts struct {
-	MaxBac
+	MaxBackoff     time.Duration
+	InitialBackoff time.Duration
