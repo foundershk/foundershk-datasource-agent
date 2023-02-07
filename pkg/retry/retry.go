@@ -10,3 +10,6 @@ import (
 type Opts struct {
 	MaxBackoff     time.Duration
 	InitialBackoff time.Duration
+}
+
+// Calls a function until it succeeds, waiting an e
