@@ -12,4 +12,5 @@ type Opts struct {
 	InitialBackoff time.Duration
 }
 
-// Calls a function until it succeeds, waiting an exponentially increasing amount of time betwee
+// Calls a function until it succeeds, waiting an exponentially increasing amount of time between calls.
+// An initial backoff of 0 means t
