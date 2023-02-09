@@ -26,4 +26,6 @@ func Forever(opts Opts, f func() error) {
 		maxBackoff := opts.MaxBackoff.Seconds()
 		initialBackoff := opts.InitialBackoff.Seconds()
 
-		max := int(min(maxBackoff, initialBa
+		max := int(min(maxBackoff, initialBackoff*math.Pow(2, float64(attempt))))
+
+		duration := ra
