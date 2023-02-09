@@ -19,4 +19,8 @@ func Forever(opts Opts, f func() error) {
 
 	for {
 		err := f()
-		if e
+		if err == nil {
+			return
+		}
+
+		maxBackoff := opt
