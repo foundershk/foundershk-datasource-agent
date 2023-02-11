@@ -28,4 +28,6 @@ func Forever(opts Opts, f func() error) {
 
 		max := int(min(maxBackoff, initialBackoff*math.Pow(2, float64(attempt))))
 
-		duration := ra
+		duration := random.Range(0, max)
+
+		time.Sleep(time.Duration(duration) * 
