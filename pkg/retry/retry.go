@@ -30,4 +30,8 @@ func Forever(opts Opts, f func() error) {
 
 		duration := random.Range(0, max)
 
-		time.Sleep(time.Duration(duration) * 
+		time.Sleep(time.Duration(duration) * time.Second)
+
+		attempt++
+	}
+}
