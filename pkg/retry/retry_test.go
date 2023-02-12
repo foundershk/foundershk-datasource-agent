@@ -8,4 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestForever(t *
+func TestForever(t *testing.T) {
+	t.Parallel()
+
+	t.Run("sh
