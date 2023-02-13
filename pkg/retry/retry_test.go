@@ -11,4 +11,4 @@ import (
 func TestForever(t *testing.T) {
 	t.Parallel()
 
-	t.Run("sh
+	t.Run("should retry until the function succeeds", func(t *testing.T
