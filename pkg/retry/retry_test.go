@@ -16,4 +16,4 @@ func TestForever(t *testing.T) {
 
 		attempts := 0
 
-		retryOp
+		retryOpts := Opts{MaxBackoff: 100 * time.Second, InitialBackoff: 0
