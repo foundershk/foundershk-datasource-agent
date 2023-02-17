@@ -16,4 +16,6 @@ func TestForever(t *testing.T) {
 
 		attempts := 0
 
-		retryOpts := Opts{MaxBackoff: 100 * time.Second, InitialBackoff: 0
+		retryOpts := Opts{MaxBackoff: 100 * time.Second, InitialBackoff: 0 * time.Second}
+		Forever(retryOpts, func() error {
+			a
