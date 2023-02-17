@@ -18,4 +18,7 @@ func TestForever(t *testing.T) {
 
 		retryOpts := Opts{MaxBackoff: 100 * time.Second, InitialBackoff: 0 * time.Second}
 		Forever(retryOpts, func() error {
-			a
+			attempts++
+
+			if attempts < 1000 {
+				return fmt.Er
