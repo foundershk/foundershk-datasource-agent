@@ -1,2 +1,6 @@
 // Contains constants used in more than one test file.
-package
+package ssh_test
+
+const (
+	pubSuffix  = ".pub"
+	certSuffix = "-cert.p
