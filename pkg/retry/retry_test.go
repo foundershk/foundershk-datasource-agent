@@ -21,4 +21,8 @@ func TestForever(t *testing.T) {
 			attempts++
 
 			if attempts < 1000 {
-				return fmt.Er
+				return fmt.Errorf("try again")
+			}
+
+			return nil
+		})
