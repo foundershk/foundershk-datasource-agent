@@ -26,3 +26,7 @@ func TestForever(t *testing.T) {
 
 			return nil
 		})
+
+		assert.Equal(t, 1000, attempts)
+	})
+}
