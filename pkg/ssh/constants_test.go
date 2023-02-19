@@ -3,4 +3,6 @@ package ssh_test
 
 const (
 	pubSuffix  = ".pub"
-	certSuffix = "-cert.p
+	certSuffix = "-cert.pub"
+	hashSuffix = "_hash"
+)
