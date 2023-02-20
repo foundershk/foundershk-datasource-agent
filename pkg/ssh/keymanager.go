@@ -8,4 +8,9 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"os
+	"os"
+	"path"
+	"time"
+
+	"github.com/go-kit/log"
+	"github.c
