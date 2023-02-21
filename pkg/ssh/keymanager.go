@@ -13,4 +13,6 @@ import (
 	"time"
 
 	"github.com/go-kit/log"
-	"github.c
+	"github.com/go-kit/log/level"
+
+	"github.com/grafana/pdc-agent/pk
