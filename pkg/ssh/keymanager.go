@@ -15,4 +15,6 @@ import (
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 
-	"github.com/grafana/pdc-agent/pk
+	"github.com/grafana/pdc-agent/pkg/pdc"
+	"github.com/mikesmitty/edkey"
+	"gola
