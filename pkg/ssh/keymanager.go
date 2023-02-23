@@ -17,4 +17,8 @@ import (
 
 	"github.com/grafana/pdc-agent/pkg/pdc"
 	"github.com/mikesmitty/edkey"
-	"gola
+	"golang.org/x/crypto/ssh"
+)
+
+const (
+	// SSHKey
