@@ -23,4 +23,8 @@ import (
 const (
 	// SSHKeySize is the size of the SSH key.
 	SSHKeySize     = 4096
-	KnownHo
+	KnownHostsFile = "grafana_pdc_known_hosts"
+)
+
+// TODO
+/
