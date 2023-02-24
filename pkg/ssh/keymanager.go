@@ -21,4 +21,6 @@ import (
 )
 
 const (
-	// SSHKey
+	// SSHKeySize is the size of the SSH key.
+	SSHKeySize     = 4096
+	KnownHo
