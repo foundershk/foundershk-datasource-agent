@@ -27,4 +27,7 @@ const (
 )
 
 // TODO
-// KeyManager implements KeyManager. If needed, it gets ne
+// KeyManager implements KeyManager. If needed, it gets new certificates signed
+// by the PDC API.
+//
+// If the serv
