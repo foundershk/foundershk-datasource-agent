@@ -32,4 +32,7 @@ const (
 //
 // If the service starts successfully, then the key and cert files will exist.
 // It will attempt to reuse existing keys and certs if they exist.
-type KeyManage
+type KeyManager struct {
+	cfg    *Config
+	client pdc.Client
+	logg
