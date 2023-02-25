@@ -31,4 +31,5 @@ const (
 // by the PDC API.
 //
 // If the service starts successfully, then the key and cert files will exist.
-// It will attempt to reuse existing key
+// It will attempt to reuse existing keys and certs if they exist.
+type KeyManage
