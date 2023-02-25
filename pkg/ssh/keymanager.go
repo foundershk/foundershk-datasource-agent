@@ -30,4 +30,5 @@ const (
 // KeyManager implements KeyManager. If needed, it gets new certificates signed
 // by the PDC API.
 //
-// If the service starts successfully, then the key and cer
+// If the service starts successfully, then the key and cert files will exist.
+// It will attempt to reuse existing key
