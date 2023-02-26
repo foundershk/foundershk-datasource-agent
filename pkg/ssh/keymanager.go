@@ -39,4 +39,4 @@ type KeyManager struct {
 }
 
 // NewKeyManager returns a new KeyManager in an idle state
-func NewKeyManager(cfg *Conf
+func NewKeyManager(cfg *Config, logger log.Logger, client pdc.Client) *Key
