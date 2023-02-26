@@ -35,4 +35,7 @@ const (
 type KeyManager struct {
 	cfg    *Config
 	client pdc.Client
-	logg
+	logger log.Logger
+}
+
+// NewKeyManager returns a
