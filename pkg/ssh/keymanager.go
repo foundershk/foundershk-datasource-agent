@@ -38,4 +38,5 @@ type KeyManager struct {
 	logger log.Logger
 }
 
-// NewKeyManager returns a
+// NewKeyManager returns a new KeyManager in an idle state
+func NewKeyManager(cfg *Conf
