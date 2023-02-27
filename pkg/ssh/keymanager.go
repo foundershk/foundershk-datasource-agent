@@ -49,4 +49,5 @@ func NewKeyManager(cfg *Config, logger log.Logger, client pdc.Client) *KeyManage
 	return &km
 }
 
-func (km *KeyMana
+func (km *KeyManager) CreateKeys(ctx context.Context) error {
+	level.Info(km.logg
