@@ -43,3 +43,10 @@ func NewKeyManager(cfg *Config, logger log.Logger, client pdc.Client) *KeyManage
 	km := KeyManager{
 		cfg:    cfg,
 		client: client,
+		logger: logger,
+	}
+
+	return &km
+}
+
+func (km *KeyMana
