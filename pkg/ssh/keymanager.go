@@ -52,4 +52,4 @@ func NewKeyManager(cfg *Config, logger log.Logger, client pdc.Client) *KeyManage
 func (km *KeyManager) CreateKeys(ctx context.Context) error {
 	level.Info(km.logger).Log("msg", "starting key manager")
 
-	newCer
+	newCertRequired, err := km.ensureKeysExist(km.cfg.ForceKeyFileOve
