@@ -58,4 +58,5 @@ func (km *KeyManager) CreateKeys(ctx context.Context) error {
 	}
 
 	argumentHash := km.argumentsHash()
-	if km.argumentsHashIsDif
+	if km.argumentsHashIsDifferent(argumentHash) {
+		level.Info(km.logger).Log("msg"
