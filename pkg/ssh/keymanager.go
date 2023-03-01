@@ -57,4 +57,5 @@ func (km *KeyManager) CreateKeys(ctx context.Context) error {
 		return err
 	}
 
-	argumentHash 
+	argumentHash := km.argumentsHash()
+	if km.argumentsHashIsDif
