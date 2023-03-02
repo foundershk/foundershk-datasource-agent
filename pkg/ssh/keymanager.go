@@ -59,4 +59,4 @@ func (km *KeyManager) CreateKeys(ctx context.Context) error {
 
 	argumentHash := km.argumentsHash()
 	if km.argumentsHashIsDifferent(argumentHash) {
-		level.Info(km.logger).Log("msg"
+		level.Info(km.logger).Log("msg", fmt.Sprintf("fetching new certificate: a
