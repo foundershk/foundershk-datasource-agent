@@ -63,4 +63,5 @@ func (km *KeyManager) CreateKeys(ctx context.Context) error {
 		newCertRequired = true
 	}
 
-	if err := km.ens
+	if err := km.ensureCertExists(ctx, newCertRequired); err != nil {
+		return fmt.Error
