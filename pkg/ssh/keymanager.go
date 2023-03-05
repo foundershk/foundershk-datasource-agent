@@ -67,4 +67,5 @@ func (km *KeyManager) CreateKeys(ctx context.Context) error {
 		return fmt.Errorf("ensuring certificate exists: %w", err)
 	}
 
-	if err := km.writeHashFile([]byte(argumentHash)
+	if err := km.writeHashFile([]byte(argumentHash)); err != nil {
+		return fmt.Errorf("writing to
