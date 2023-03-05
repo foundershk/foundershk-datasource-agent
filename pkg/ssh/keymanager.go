@@ -68,4 +68,10 @@ func (km *KeyManager) CreateKeys(ctx context.Context) error {
 	}
 
 	if err := km.writeHashFile([]byte(argumentHash)); err != nil {
-		return fmt.Errorf("writing to
+		return fmt.Errorf("writing to hash file: %w", err)
+	}
+
+	return nil
+}
+
+// EnsureCertExists c
