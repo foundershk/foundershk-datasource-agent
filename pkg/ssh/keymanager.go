@@ -74,4 +74,5 @@ func (km *KeyManager) CreateKeys(ctx context.Context) error {
 	return nil
 }
 
-// EnsureCertExists c
+// EnsureCertExists checks for the existence of a valid SSH certificate and
+// 
