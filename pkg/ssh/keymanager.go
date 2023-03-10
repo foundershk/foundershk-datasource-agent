@@ -87,4 +87,5 @@ func (km KeyManager) ensureCertExists(ctx context.Context, forceCreate bool) err
 		return nil
 	}
 
-	newCertReq
+	newCertRequired = km.newCertRequired()
+	if !newCertRe
