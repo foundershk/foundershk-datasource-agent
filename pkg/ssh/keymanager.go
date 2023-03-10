@@ -82,4 +82,9 @@ func (km KeyManager) ensureCertExists(ctx context.Context, forceCreate bool) err
 	if newCertRequired {
 		err := km.generateCert(ctx)
 		if err != nil {
-			return fmt.Errorf("failed to generate 
+			return fmt.Errorf("failed to generate new certificate: %w", err)
+		}
+		return nil
+	}
+
+	newCertReq
