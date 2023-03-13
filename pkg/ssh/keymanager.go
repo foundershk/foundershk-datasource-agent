@@ -100,4 +100,5 @@ func (km KeyManager) ensureCertExists(ctx context.Context, forceCreate bool) err
 }
 
 // ensureKeysExist checks for the existence of valid SSH keys. If they exist,
-// it does nothing. If they don't, i
+// it does nothing. If they don't, it creates them. It returns a boolean
+// indicating wh
