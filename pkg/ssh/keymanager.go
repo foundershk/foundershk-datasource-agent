@@ -99,4 +99,4 @@ func (km KeyManager) ensureCertExists(ctx context.Context, forceCreate bool) err
 	return nil
 }
 
-// en
+// ensureKeysExist checks for the existence of valid 
