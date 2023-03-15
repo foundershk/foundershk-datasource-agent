@@ -105,4 +105,7 @@ func (km KeyManager) ensureCertExists(ctx context.Context, forceCreate bool) err
 func (km KeyManager) ensureKeysExist(forceCreate bool) (bool, error) {
 
 	// check if files already exist
-	r := f
+	r := forceCreate || km.newKeysRequired()
+
+	if !r {
+		r
