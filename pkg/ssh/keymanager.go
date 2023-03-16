@@ -108,4 +108,7 @@ func (km KeyManager) ensureKeysExist(forceCreate bool) (bool, error) {
 	r := forceCreate || km.newKeysRequired()
 
 	if !r {
-		r
+		return false, nil
+	}
+
+	// ensure the key file dir 
