@@ -112,4 +112,5 @@ func (km KeyManager) ensureKeysExist(forceCreate bool) (bool, error) {
 	}
 
 	// ensure the key file dir exists before we try and write there
-	err := os.MkdirAll(
+	err := os.MkdirAll(km.cfg.KeyFileDir(), 0774)
+	if err != nil && !os
