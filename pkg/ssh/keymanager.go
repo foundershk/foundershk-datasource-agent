@@ -120,4 +120,5 @@ func (km KeyManager) ensureKeysExist(forceCreate bool) (bool, error) {
 	return true, km.generateKeyPair()
 }
 
-func (km KeyMana
+func (km KeyManager) newKeysRequired() bool {
+	kb, err := km.rea
