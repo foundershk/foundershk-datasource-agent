@@ -121,4 +121,6 @@ func (km KeyManager) ensureKeysExist(forceCreate bool) (bool, error) {
 }
 
 func (km KeyManager) newKeysRequired() bool {
-	kb, err := km.rea
+	kb, err := km.readKeyFile()
+	if err != nil {
+		level.Info(km.logger).Log("ms
