@@ -117,4 +117,7 @@ func (km KeyManager) ensureKeysExist(forceCreate bool) (bool, error) {
 		return false, err
 	}
 
-	r
+	return true, km.generateKeyPair()
+}
+
+func (km KeyMana
