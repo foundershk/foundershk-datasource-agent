@@ -123,4 +123,9 @@ func (km KeyManager) ensureKeysExist(forceCreate bool) (bool, error) {
 func (km KeyManager) newKeysRequired() bool {
 	kb, err := km.readKeyFile()
 	if err != nil {
-		level.Info(km.logger).Log("msg", "new keys required: could not read private key fi
+		level.Info(km.logger).Log("msg", "new keys required: could not read private key file")
+		return true
+	}
+
+	block, _ := pem.Decode(kb)
+	if block ==
