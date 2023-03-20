@@ -133,4 +133,6 @@ func (km KeyManager) newKeysRequired() bool {
 		return true
 	}
 
-	pbk, err := km.readPubKeyFile
+	pbk, err := km.readPubKeyFile()
+	if err != nil {
+		level.Info(km.logger).Log("msg",
