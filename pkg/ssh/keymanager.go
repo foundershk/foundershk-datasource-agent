@@ -130,3 +130,7 @@ func (km KeyManager) newKeysRequired() bool {
 	block, _ := pem.Decode(kb)
 	if block == nil {
 		level.Info(km.logger).Log("msg", "new keys required: could not parse private key PEM file")
+		return true
+	}
+
+	pbk, err := km.readPubKeyFile
