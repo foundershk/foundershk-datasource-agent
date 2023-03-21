@@ -135,4 +135,8 @@ func (km KeyManager) newKeysRequired() bool {
 
 	pbk, err := km.readPubKeyFile()
 	if err != nil {
-		level.Info(km.logger).Log("msg", "new keys required: could not read public
+		level.Info(km.logger).Log("msg", "new keys required: could not read public key file")
+		return true
+	}
+
+	_, _, _, _, err = ssh.Parse
