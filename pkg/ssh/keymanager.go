@@ -139,4 +139,6 @@ func (km KeyManager) newKeysRequired() bool {
 		return true
 	}
 
-	_, _, _, _, err = ssh.Parse
+	_, _, _, _, err = ssh.ParseAuthorizedKey(pbk)
+	if err != nil {
+		level.Info(km
