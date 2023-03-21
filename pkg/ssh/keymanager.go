@@ -135,4 +135,4 @@ func (km KeyManager) newKeysRequired() bool {
 
 	pbk, err := km.readPubKeyFile()
 	if err != nil {
-		level.Info(km.logger).Log("msg",
+		level.Info(km.logger).Log("msg", "new keys required: could not read public
