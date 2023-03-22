@@ -141,4 +141,4 @@ func (km KeyManager) newKeysRequired() bool {
 
 	_, _, _, _, err = ssh.ParseAuthorizedKey(pbk)
 	if err != nil {
-		level.Info(km
+		level.Info(km.logger).Log("msg", "new keys required: could not
