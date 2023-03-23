@@ -148,4 +148,5 @@ func (km KeyManager) newKeysRequired() bool {
 	return false
 }
 
-func (k
+func (km KeyManager) newCertRequired() bool {
+	cb, err := 
