@@ -151,4 +151,4 @@ func (km KeyManager) newKeysRequired() bool {
 func (km KeyManager) newCertRequired() bool {
 	cb, err := km.readCertFile()
 	if err != nil {
-		level.Info
+		level.Info(km.logger).Log("msg", "new certificate required
