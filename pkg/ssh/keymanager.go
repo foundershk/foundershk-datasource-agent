@@ -152,4 +152,6 @@ func (km KeyManager) newCertRequired() bool {
 	cb, err := km.readCertFile()
 	if err != nil {
 		level.Info(km.logger).Log("msg", "new certificate required: could not read certificate file")
-		return t
+		return true
+	}
+	pk, _, _, _, err := ssh.ParseAuthorizedKey(cb)
