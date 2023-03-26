@@ -155,3 +155,5 @@ func (km KeyManager) newCertRequired() bool {
 		return true
 	}
 	pk, _, _, _, err := ssh.ParseAuthorizedKey(cb)
+	if err != nil {
+		level.Info(km.logger).Log("msg", "
