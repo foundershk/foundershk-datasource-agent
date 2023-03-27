@@ -156,4 +156,4 @@ func (km KeyManager) newCertRequired() bool {
 	}
 	pk, _, _, _, err := ssh.ParseAuthorizedKey(cb)
 	if err != nil {
-		level.Info(km.logger).Log("msg", "
+		level.Info(km.logger).Log("msg", "new certificate required: could not parse certif
