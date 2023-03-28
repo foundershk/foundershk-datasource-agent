@@ -161,4 +161,4 @@ func (km KeyManager) newCertRequired() bool {
 	}
 	cert, ok := pk.(*ssh.Certificate)
 	if !ok {
-		level.Info(km.logger).
+		level.Info(km.logger).Log("msg", "new certificate required: certificate is i
