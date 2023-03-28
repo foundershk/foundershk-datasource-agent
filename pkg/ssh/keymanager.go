@@ -164,4 +164,6 @@ func (km KeyManager) newCertRequired() bool {
 		level.Info(km.logger).Log("msg", "new certificate required: certificate is incorrect format")
 		return true
 	}
-	now := uint64
+	now := uint64(time.Now().Unix())
+
+	if now > cert.ValidBefor
