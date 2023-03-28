@@ -159,4 +159,6 @@ func (km KeyManager) newCertRequired() bool {
 		level.Info(km.logger).Log("msg", "new certificate required: could not parse certificate")
 		return true
 	}
-	cert, ok := pk.(*ssh.
+	cert, ok := pk.(*ssh.Certificate)
+	if !ok {
+		level.Info(km.logger).
