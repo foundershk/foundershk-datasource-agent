@@ -166,4 +166,5 @@ func (km KeyManager) newCertRequired() bool {
 	}
 	now := uint64(time.Now().Unix())
 
-	if now > cert.ValidBefor
+	if now > cert.ValidBefore {
+		level.Info(km.logger).Log("msg", "new certificate re
