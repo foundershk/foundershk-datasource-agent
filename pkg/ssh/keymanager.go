@@ -167,4 +167,5 @@ func (km KeyManager) newCertRequired() bool {
 	now := uint64(time.Now().Unix())
 
 	if now > cert.ValidBefore {
-		level.Info(km.logger).Log("msg", "new certificate re
+		level.Info(km.logger).Log("msg", "new certificate required: certificate validity has expired")
+		r
