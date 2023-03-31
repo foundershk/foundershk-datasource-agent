@@ -173,4 +173,7 @@ func (km KeyManager) newCertRequired() bool {
 
 	if now < cert.ValidAfter {
 		level.Info(km.logger).Log("msg", "new certificate required: certificate is not yet valid")
-		r
+		return true
+	}
+
+	level.Info(km.logger).Log("msg", "foun
