@@ -178,4 +178,6 @@ func (km KeyManager) newCertRequired() bool {
 
 	level.Info(km.logger).Log("msg", "found existing valid certificate")
 
-	kh, err := os.ReadFile(path.
+	kh, err := os.ReadFile(path.Join(km.cfg.KeyFileDir(), KnownHostsFile))
+	if err != nil {
+	
