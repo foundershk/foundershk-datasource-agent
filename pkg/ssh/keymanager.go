@@ -183,4 +183,6 @@ func (km KeyManager) newCertRequired() bool {
 		level.Info(km.logger).Log("msg", "fetching new certificate: cannot not read known hosts file")
 		return true
 	}
-	_, _, _,
+	_, _, _, _, _, err = ssh.ParseKnownHosts(kh)
+	if err != nil {
+		level.Info
