@@ -180,4 +180,4 @@ func (km KeyManager) newCertRequired() bool {
 
 	kh, err := os.ReadFile(path.Join(km.cfg.KeyFileDir(), KnownHostsFile))
 	if err != nil {
-	
+		level.Info(km.logger).Log("msg", "fetching new certif
