@@ -185,4 +185,4 @@ func (km KeyManager) newCertRequired() bool {
 	}
 	_, _, _, _, _, err = ssh.ParseKnownHosts(kh)
 	if err != nil {
-		level.Info
+		level.Info(km.logger).Log("msg", fmt.Sprintf("fetchi
