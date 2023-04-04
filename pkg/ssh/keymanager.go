@@ -189,4 +189,4 @@ func (km KeyManager) newCertRequired() bool {
 		return true
 	}
 
-	level.Info(km.logger).L
+	level.Info(km.logger).Log("msg", fmt.Sprintf("found valid %s", KnownHosts
