@@ -194,4 +194,5 @@ func (km KeyManager) newCertRequired() bool {
 }
 
 // argumentsHashIsDifferent returns true when specific arguments
-// passed to the p
+// passed to the pdc agent are different from the previous arguments.
+func (km K
