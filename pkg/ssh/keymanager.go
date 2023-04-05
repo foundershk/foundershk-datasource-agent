@@ -193,4 +193,5 @@ func (km KeyManager) newCertRequired() bool {
 	return false
 }
 
-// argumentsHashIsDiffer
+// argumentsHashIsDifferent returns true when specific arguments
+// passed to the p
