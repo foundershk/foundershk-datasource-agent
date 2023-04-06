@@ -197,4 +197,5 @@ func (km KeyManager) newCertRequired() bool {
 // passed to the pdc agent are different from the previous arguments.
 func (km KeyManager) argumentsHashIsDifferent(hash string) bool {
 	bytes, err := km.readHashFile()
-	if errors.Is(e
+	if errors.Is(err, os.ErrNotExist) {
+		// No hash stored ye
