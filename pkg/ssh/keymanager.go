@@ -202,4 +202,9 @@ func (km KeyManager) argumentsHashIsDifferent(hash string) bool {
 		return true
 	}
 
-	contents := string(bytes
+	contents := string(bytes)
+
+	return contents != hash
+}
+
+// argumentsHash retur
