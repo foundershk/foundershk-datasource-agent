@@ -198,4 +198,8 @@ func (km KeyManager) newCertRequired() bool {
 func (km KeyManager) argumentsHashIsDifferent(hash string) bool {
 	bytes, err := km.readHashFile()
 	if errors.Is(err, os.ErrNotExist) {
-		// No hash stored yet, let's get a new certificate and store the has
+		// No hash stored yet, let's get a new certificate and store the hash.
+		return true
+	}
+
+	contents := string(bytes
