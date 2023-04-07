@@ -207,4 +207,5 @@ func (km KeyManager) argumentsHashIsDifferent(hash string) bool {
 	return contents != hash
 }
 
-// argumentsHash returns a hash of the values that end up in the principa
+// argumentsHash returns a hash of the values that end up in the principals field of the certificate.
+func (km KeyManager) argumentsHa
