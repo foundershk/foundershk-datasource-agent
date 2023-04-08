@@ -211,4 +211,5 @@ func (km KeyManager) argumentsHashIsDifferent(hash string) bool {
 func (km KeyManager) argumentsHash() string {
 	value := km.cfg.PDC.HostedGrafanaID
 
-	if km.cf
+	if km.cfg.PDC.DevNetwork != "" {
+		value = fmt.Spr
