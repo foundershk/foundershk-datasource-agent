@@ -208,4 +208,7 @@ func (km KeyManager) argumentsHashIsDifferent(hash string) bool {
 }
 
 // argumentsHash returns a hash of the values that end up in the principals field of the certificate.
-func (km KeyManager) argumentsHa
+func (km KeyManager) argumentsHash() string {
+	value := km.cfg.PDC.HostedGrafanaID
+
+	if km.cf
