@@ -212,4 +212,7 @@ func (km KeyManager) argumentsHash() string {
 	value := km.cfg.PDC.HostedGrafanaID
 
 	if km.cfg.PDC.DevNetwork != "" {
-		value = fmt.Spr
+		value = fmt.Sprintf("%s/%s", value, km.cfg.PDC.DevNetwork)
+	}
+
+	return fmt.Sprintf
