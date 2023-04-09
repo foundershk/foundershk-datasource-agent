@@ -215,4 +215,7 @@ func (km KeyManager) argumentsHash() string {
 		value = fmt.Sprintf("%s/%s", value, km.cfg.PDC.DevNetwork)
 	}
 
-	return fmt.Sprintf
+	return fmt.Sprintf("%x", sha256.Sum256([]byte(value)))
+}
+
+func (km KeyMana
