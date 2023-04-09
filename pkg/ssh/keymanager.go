@@ -218,4 +218,6 @@ func (km KeyManager) argumentsHash() string {
 	return fmt.Sprintf("%x", sha256.Sum256([]byte(value)))
 }
 
-func (km KeyMana
+func (km KeyManager) generateKeyPair() error {
+
+	// Generate a new private/
