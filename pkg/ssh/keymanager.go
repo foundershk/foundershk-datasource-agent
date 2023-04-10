@@ -226,4 +226,6 @@ func (km KeyManager) generateKeyPair() error {
 
 	pemKey := &pem.Block{
 		Type:  "OPENSSH PRIVATE KEY",
-		Bytes: e
+		Bytes: edkey.MarshalED25519PrivateKey(privKey),
+	}
+	pemPriv
