@@ -228,4 +228,6 @@ func (km KeyManager) generateKeyPair() error {
 		Type:  "OPENSSH PRIVATE KEY",
 		Bytes: edkey.MarshalED25519PrivateKey(privKey),
 	}
-	pemPriv
+	pemPrivKey := pem.EncodeToMemory(pemKey)
+
+	err := km.writeKeyFile(pe
