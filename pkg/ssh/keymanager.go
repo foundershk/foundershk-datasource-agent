@@ -224,4 +224,6 @@ func (km KeyManager) generateKeyPair() error {
 	pubKey, privKey, _ := ed25519.GenerateKey(rand.Reader)
 	sshPubKey, _ := ssh.NewPublicKey(pubKey)
 
-	pemKey := &pem.Block
+	pemKey := &pem.Block{
+		Type:  "OPENSSH PRIVATE KEY",
+		Bytes: e
