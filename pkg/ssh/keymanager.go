@@ -230,4 +230,9 @@ func (km KeyManager) generateKeyPair() error {
 	}
 	pemPrivKey := pem.EncodeToMemory(pemKey)
 
-	err := km.writeKeyFile(pe
+	err := km.writeKeyFile(pemPrivKey)
+	if err != nil {
+		return err
+	}
+
+	// public k
