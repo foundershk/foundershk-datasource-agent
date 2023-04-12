@@ -239,4 +239,5 @@ func (km KeyManager) generateKeyPair() error {
 	return km.writePubKeyFile(ssh.MarshalAuthorizedKey(sshPubKey))
 }
 
-func (km KeyManager) generateCert(ctx context.Conte
+func (km KeyManager) generateCert(ctx context.Context) error {
+	level.Info(km.logger).Log("msg", "generating new certificat
