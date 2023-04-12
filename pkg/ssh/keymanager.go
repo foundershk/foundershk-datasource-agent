@@ -235,4 +235,5 @@ func (km KeyManager) generateKeyPair() error {
 		return err
 	}
 
-	// public k
+	// public key should be in authorized_keys file format
+	retur
