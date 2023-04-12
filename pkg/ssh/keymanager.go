@@ -236,4 +236,7 @@ func (km KeyManager) generateKeyPair() error {
 	}
 
 	// public key should be in authorized_keys file format
-	retur
+	return km.writePubKeyFile(ssh.MarshalAuthorizedKey(sshPubKey))
+}
+
+func
