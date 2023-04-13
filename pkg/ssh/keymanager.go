@@ -240,4 +240,8 @@ func (km KeyManager) generateKeyPair() error {
 }
 
 func (km KeyManager) generateCert(ctx context.Context) error {
-	level.Info(km.logger).Log("msg", "generating new certificat
+	level.Info(km.logger).Log("msg", "generating new certificate")
+
+	pbk, err := km.readPubKeyFile()
+	if err != nil {
+		return
