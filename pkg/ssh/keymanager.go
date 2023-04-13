@@ -247,4 +247,6 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 		return fmt.Errorf("could not read public ssh key file: %w", err)
 	}
 
-	resp, err := km.client.SignSSHKey(ctx,
+	resp, err := km.client.SignSSHKey(ctx, pbk)
+	if err != nil {
+		return fmt.Errorf("ke
