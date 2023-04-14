@@ -249,4 +249,7 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 
 	resp, err := km.client.SignSSHKey(ctx, pbk)
 	if err != nil {
-		return fmt.Errorf("ke
+		return fmt.Errorf("key signing request failed: %w", err)
+	}
+
+	if resp == ni
