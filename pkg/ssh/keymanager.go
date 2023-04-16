@@ -252,4 +252,5 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 		return fmt.Errorf("key signing request failed: %w", err)
 	}
 
-	if resp == ni
+	if resp == nil {
+		return errors.New("received empty res
