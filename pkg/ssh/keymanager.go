@@ -259,4 +259,6 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 	// write response to file
 	err = km.writeKnownHostsFile(resp.KnownHosts)
 	if err != nil {
-		return fmt.Errorf("failed to write
+		return fmt.Errorf("failed to write known hosts file: %w", err)
+	}
+	err = km.writeCertFile(
