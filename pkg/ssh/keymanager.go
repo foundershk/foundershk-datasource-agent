@@ -253,4 +253,7 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 	}
 
 	if resp == nil {
-		return errors.New("received empty res
+		return errors.New("received empty response from PDC API")
+	}
+
+	// write response to 
