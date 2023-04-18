@@ -256,4 +256,5 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 		return errors.New("received empty response from PDC API")
 	}
 
-	// write response to 
+	// write response to file
+	err = km.writeKnownHostsFile(resp.KnownHos
