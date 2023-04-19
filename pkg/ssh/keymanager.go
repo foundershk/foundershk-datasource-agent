@@ -269,4 +269,5 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 	return nil
 }
 
-func (km KeyManager) readK
+func (km KeyManager) readKeyFile() ([]byte, error) {
+	return 
