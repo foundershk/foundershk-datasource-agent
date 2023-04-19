@@ -261,4 +261,5 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed to write known hosts file: %w", err)
 	}
-	err = km.writeCertFile(
+	err = km.writeCertFile(ssh.MarshalAuthorizedKey(&resp.Certificate))
+	if err != nil {
