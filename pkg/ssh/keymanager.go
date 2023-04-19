@@ -263,3 +263,10 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 	}
 	err = km.writeCertFile(ssh.MarshalAuthorizedKey(&resp.Certificate))
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (km KeyManager) readK
