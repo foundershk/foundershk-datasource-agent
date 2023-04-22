@@ -270,4 +270,7 @@ func (km KeyManager) generateCert(ctx context.Context) error {
 }
 
 func (km KeyManager) readKeyFile() ([]byte, error) {
-	return 
+	return os.ReadFile(km.cfg.KeyFile)
+}
+
+func (km KeyManager) r
