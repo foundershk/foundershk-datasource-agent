@@ -274,4 +274,8 @@ func (km KeyManager) readKeyFile() ([]byte, error) {
 }
 
 func (km KeyManager) readPubKeyFile() ([]byte, error) {
-	path := km.cfg.KeyF
+	path := km.cfg.KeyFile + ".pub"
+	return os.ReadFile(path)
+}
+
+func (km KeyManag
