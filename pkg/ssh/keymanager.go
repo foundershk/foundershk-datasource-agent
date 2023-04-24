@@ -279,4 +279,8 @@ func (km KeyManager) readPubKeyFile() ([]byte, error) {
 }
 
 func (km KeyManager) readCertFile() ([]byte, error) {
-	path := km.cfg.Key
+	path := km.cfg.KeyFile + "-cert.pub"
+	return os.ReadFile(path)
+}
+
+func (km KeyManag
