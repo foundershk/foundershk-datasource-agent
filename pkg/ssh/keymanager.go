@@ -283,4 +283,5 @@ func (km KeyManager) readCertFile() ([]byte, error) {
 	return os.ReadFile(path)
 }
 
-func (km KeyManag
+func (km KeyManager) readHashFile() ([]byte, error) {
+	path := km.
