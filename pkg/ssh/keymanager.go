@@ -284,4 +284,8 @@ func (km KeyManager) readCertFile() ([]byte, error) {
 }
 
 func (km KeyManager) readHashFile() ([]byte, error) {
-	path := km.
+	path := km.cfg.KeyFile + "_hash"
+	return os.ReadFile(path)
+}
+
+fu
