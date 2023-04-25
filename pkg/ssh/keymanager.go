@@ -288,4 +288,4 @@ func (km KeyManager) readHashFile() ([]byte, error) {
 	return os.ReadFile(path)
 }
 
-fu
+func (km KeyManager) writeKeyFile(data []byte) error {
