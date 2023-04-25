@@ -289,3 +289,7 @@ func (km KeyManager) readHashFile() ([]byte, error) {
 }
 
 func (km KeyManager) writeKeyFile(data []byte) error {
+	return os.WriteFile(km.cfg.KeyFile, data, 0600)
+}
+
+fun
