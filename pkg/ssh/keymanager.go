@@ -297,4 +297,4 @@ func (km KeyManager) writePubKeyFile(data []byte) error {
 	return os.WriteFile(path, data, 0600)
 }
 
-func (km KeyManager) write
+func (km KeyManager) writeKnownHostsFile(data []byte) error {
