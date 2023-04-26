@@ -293,3 +293,5 @@ func (km KeyManager) writeKeyFile(data []byte) error {
 }
 
 func (km KeyManager) writePubKeyFile(data []byte) error {
+	path := km.cfg.KeyFile + ".pub"
+	return os.Wr
