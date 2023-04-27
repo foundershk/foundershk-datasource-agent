@@ -298,3 +298,4 @@ func (km KeyManager) writePubKeyFile(data []byte) error {
 }
 
 func (km KeyManager) writeKnownHostsFile(data []byte) error {
+	path := path.Join(km.cfg.KeyFileDir(), KnownHos
