@@ -307,4 +307,5 @@ func (km KeyManager) writeCertFile(data []byte) error {
 	return os.WriteFile(path, data, 0600)
 }
 
-func (
+func (km KeyManager) writeHashFile(data []byte) error {
+	path
