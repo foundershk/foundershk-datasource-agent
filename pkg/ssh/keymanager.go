@@ -302,4 +302,5 @@ func (km KeyManager) writeKnownHostsFile(data []byte) error {
 	return os.WriteFile(path, data, 0600)
 }
 
-func (km
+func (km KeyManager) writeCertFile(data []byte) error {
+	path := path.Join(km.
