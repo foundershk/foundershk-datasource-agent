@@ -308,4 +308,5 @@ func (km KeyManager) writeCertFile(data []byte) error {
 }
 
 func (km KeyManager) writeHashFile(data []byte) error {
-	path
+	path := path.Join(km.cfg.KeyFile + "_hash")
+	return 
