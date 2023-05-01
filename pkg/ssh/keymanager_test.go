@@ -68,3 +68,49 @@ ejdzM3RnYUh4c1FkRW1mNFFEZ0ZBWnVlejlnLzJTYSsxeUhvNklURUs5Q1ZYOVJz
 aTFTdElFKzVxWjF0alFjTUtqbDZ0OVU4RGhwdXFKaW5WQnBiN3NjYkVmRVlNcXR6
 bTdaRzZBVmlGSm9vMjRMYkJxMi9MdEFwYUFpVU51c2ZYSUt1aTZhUlRuNlhyb0NN
 WkFZRERrbkJsS0EwOC9IbHZJYko2VEZ3T2VFbzVtTjhKN3hhSUZ4Zk9PZUNQdFho
+RnVYTEQrSmlyOEhuZWZyLzVVOTJjQ0dCS1VGOURYSDhQc1RYR1QxWWNQMkpGRXZL
+QW1RbmNCaFJzZE4rblR0WjJ3T2NNaFpyTkpkbFdoWHlrNUNvcnYxTXhiZVBPTUFK
+azl0ZGNvOFFqN0pIcFR0WnFBRm12c1E9PQo=
+-----END CERTIFICATE-----
+`
+)
+
+// Contains a KeyManager that can be used for testing
+// and the values used to create it.
+type testKeyManagerOutput struct {
+	pdcCfg pdc.Config
+	sshCfg *ssh.Config
+	km     *ssh.KeyManager
+}
+
+// Instantiates and returns a KeyManager that can be used for testing.
+func testKeyManager(t *testing.T) testKeyManagerOutput {
+	t.Helper()
+
+	// create default configs
+	pdcCfg := pdc.Config{HostedGrafanaID: "1"}
+	sshCfg := ssh.DefaultConfig()
+	sshCfg.PDC = pdcCfg
+
+	sshCfg.KeyFile = path.Join(t.TempDir(), "testkey")
+
+	url, _ := mockPDC(t, http.MethodPost, "/pdc/api/v1/sign-public-key", http.StatusOK)
+	pdcCfg.URL = url
+
+	logger := log.NewNopLogger()
+
+	client, err := pdc.NewClient(&pdcCfg, logger)
+	require.Nil(t, err)
+
+	return testKeyManagerOutput{
+		pdcCfg: pdcCfg,
+		sshCfg: sshCfg,
+		km:     ssh.NewKeyManager(sshCfg, logger, client),
+	}
+}
+
+func TestKeyManager_CreateKeys(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ssh key pairs are reused by default, a new ssh pair is not created each time", func(t *testing.T) {
+		t.Parallel()
