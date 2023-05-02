@@ -114,3 +114,56 @@ func TestKeyManager_CreateKeys(t *testing.T) {
 
 	t.Run("ssh key pairs are reused by default, a new ssh pair is not created each time", func(t *testing.T) {
 		t.Parallel()
+
+		ctx := context.Background()
+		sut := testKeyManager(t)
+
+		// The first call to CreateKeys will create a new ssh pair.
+		assert.NoError(t, sut.km.CreateKeys(ctx))
+
+		// Read the private key that was just created.
+		key1, err := os.ReadFile(sut.sshCfg.KeyFile)
+		assert.NotEmpty(t, key1)
+		assert.NoError(t, err)
+
+		// The second call to CreateKeys will see that a ssh pair already exists
+		// and it'll not create a new one.
+		assert.NoError(t, sut.km.CreateKeys(ctx))
+
+		// Read the key again, it should be the same key we read before.
+		key2, err := os.ReadFile(sut.sshCfg.KeyFile)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, key2)
+
+		assert.Equal(t, key1, key2)
+	})
+
+	t.Run("a flag can be used to force a new ssh pair to be generated, should generate a new ssh key pair even if a key pair already exists", func(t *testing.T) {
+		t.Parallel()
+
+		ctx := context.Background()
+
+		sut := testKeyManager(t)
+
+		// Force the creation of a new ssh key pair.
+		sut.sshCfg.ForceKeyFileOverwrite = true
+
+		// The first call to CreateKeys will create a new ssh pair.
+		assert.NoError(t, sut.km.CreateKeys(ctx))
+
+		// Read the private key that was just created.
+		key1, err := os.ReadFile(sut.sshCfg.KeyFile)
+		assert.NotEmpty(t, key1)
+		assert.NoError(t, err)
+
+		// The second call to CreateKeys will create a new ssh key pair even though a key pair already exists.
+		assert.NoError(t, sut.km.CreateKeys(ctx))
+
+		// Read the private key that was just created.
+		key2, err := os.ReadFile(sut.sshCfg.KeyFile)
+		assert.NotEmpty(t, key2)
+		assert.NoError(t, err)
+
+		// A new key should have been generated.
+		assert.NotEqual(t, key1, key2)
+	})
