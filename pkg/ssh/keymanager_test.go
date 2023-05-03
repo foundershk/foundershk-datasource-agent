@@ -315,3 +315,57 @@ func TestKeyManager_EnsureKeysExist(t *testing.T) {
 				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), kh, 0644)
 				// The new argument hash is different from the previous one.
 				_ = os.WriteFile(cfg.KeyFile+hashSuffix, []byte("some hash"), 0644)
+			},
+			wantSigningRequest: true,
+			assertFn:           assertExpectedFiles,
+		},
+		{
+			name: "cert is valid but an argument hash file does not exist, should generate new cert because arguments may have changed: expect signing request",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				// gen cert with validity period in the past
+				privKey, pubKey, cert, kh := generateKeys("", "")
+				_ = os.WriteFile(cfg.KeyFile, privKey, 0600)
+				_ = os.WriteFile(cfg.KeyFile+pubSuffix, pubKey, 0644)
+				_ = os.WriteFile(cfg.KeyFile+certSuffix, cert, 0644)
+				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), kh, 0644)
+				// Note that we are not creating a hash file.
+			},
+			wantSigningRequest: true,
+			assertFn:           assertExpectedFiles,
+		},
+	}
+
+	for _, tc := range testcases {
+		t.Run(tc.name, func(t *testing.T) {
+			ctx := context.Background()
+
+			// create default configs
+			pdcCfg := pdc.Config{HostedGrafanaID: "1"}
+			cfg := ssh.DefaultConfig()
+			cfg.PDC = pdcCfg
+
+			cfg.KeyFile = path.Join(t.TempDir(), "testkey")
+
+			// create mock PDC server and use the URL in the pdc config
+			if tc.apiResponseCode == 0 {
+				tc.apiResponseCode = 200
+			}
+			url, called := mockPDC(t, http.MethodPost, "/pdc/api/v1/sign-public-key", tc.apiResponseCode)
+			pdcCfg.URL = url
+
+			// allow test case to modify cfg and add files to frw
+			if tc.setupFn != nil {
+				tc.setupFn(t, cfg)
+			}
+
+			logger := log.NewNopLogger()
+
+			client, err := pdc.NewClient(&pdcCfg, logger)
+			require.Nil(t, err)
+
+			km := ssh.NewKeyManager(cfg, logger, client)
+			err = km.CreateKeys(ctx)
+			if tc.wantErr {
+				assert.Error(t, err)
+				return
