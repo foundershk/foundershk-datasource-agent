@@ -269,3 +269,49 @@ func TestKeyManager_EnsureKeysExist(t *testing.T) {
 			assertFn: func(t *testing.T, cfg *ssh.Config) {
 				keyFile, err := os.ReadFile(cfg.KeyFile)
 				assert.NoError(t, err)
+				assert.NotNil(t, keyFile)
+
+				pubKeyFile, err := os.ReadFile(cfg.KeyFile + pubSuffix)
+				assert.NoError(t, err)
+				assert.NotNil(t, pubKeyFile)
+
+				kfd := cfg.KeyFileDir()
+				_, err = os.ReadFile(path.Join(kfd, ssh.KnownHostsFile))
+				assert.NoError(t, err)
+
+				cert, err := os.ReadFile(cfg.KeyFile + certSuffix)
+				assert.NoError(t, err)
+				_, _, _, _, err = gossh.ParseAuthorizedKey(cert)
+				assert.NoError(t, err)
+
+				contents, err := os.ReadFile(cfg.KeyFile + hashSuffix)
+				assert.NoError(t, err)
+				assert.NotEmpty(t, contents)
+			},
+		},
+		{
+			name: "cert outside validity window: expect signing request",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				// gen cert with validity period in the past
+				privKey, pubKey, cert, kh := generateKeys("-10m", "-1h")
+				_ = os.WriteFile(cfg.KeyFile, privKey, 0600)
+				_ = os.WriteFile(cfg.KeyFile+pubSuffix, pubKey, 0644)
+				_ = os.WriteFile(cfg.KeyFile+certSuffix, cert, 0644)
+				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), kh, 0644)
+			},
+			wantSigningRequest: true,
+			assertFn:           assertExpectedFiles,
+		},
+		{
+			name: "agent arguments have changed, should generate new cert: expect signing request",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				// gen cert with validity period in the past
+				privKey, pubKey, cert, kh := generateKeys("", "")
+				_ = os.WriteFile(cfg.KeyFile, privKey, 0600)
+				_ = os.WriteFile(cfg.KeyFile+pubSuffix, pubKey, 0644)
+				_ = os.WriteFile(cfg.KeyFile+certSuffix, cert, 0644)
+				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), kh, 0644)
+				// The new argument hash is different from the previous one.
+				_ = os.WriteFile(cfg.KeyFile+hashSuffix, []byte("some hash"), 0644)
