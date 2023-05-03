@@ -167,3 +167,43 @@ func TestKeyManager_CreateKeys(t *testing.T) {
 		// A new key should have been generated.
 		assert.NotEqual(t, key1, key2)
 	})
+}
+
+func TestKeyManager_EnsureKeysExist(t *testing.T) {
+	testcases := []struct {
+		name               string
+		setupFn            func(*testing.T, *ssh.Config)
+		wantErr            bool
+		assertFn           func(*testing.T, *ssh.Config)
+		apiResponseCode    int
+		wantSigningRequest bool
+	}{
+		{
+			name:               "no key files exist: expect keys and a request to PDC for cert",
+			assertFn:           assertExpectedFiles,
+			wantSigningRequest: true,
+		},
+		{
+			name: "only private key file exists: expect new keys and request for cert",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				privKey, _, _, _ := generateKeys("", "")
+				_ = os.WriteFile(cfg.KeyFile, privKey, 0600)
+			},
+			assertFn:           assertExpectedFiles,
+			wantSigningRequest: true,
+		},
+		{
+			name: "all key files exist but private key is an invalid format: expect new keys and request for cert",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				_, pubKey, cert, kh := generateKeys("", "")
+				_ = os.WriteFile(cfg.KeyFile, []byte("invalid private key"), 0600)
+				_ = os.WriteFile(cfg.KeyFile+pubSuffix, pubKey, 0644)
+				_ = os.WriteFile(cfg.KeyFile+certSuffix, cert, 0644)
+				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), kh, 0644)
+				_ = os.WriteFile(cfg.KeyFile+hashSuffix, []byte("6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"), 0644)
+			},
+			assertFn:           assertExpectedFiles,
+			wantSigningRequest: true,
+		},
