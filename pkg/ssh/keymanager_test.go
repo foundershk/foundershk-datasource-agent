@@ -207,3 +207,65 @@ func TestKeyManager_EnsureKeysExist(t *testing.T) {
 			assertFn:           assertExpectedFiles,
 			wantSigningRequest: true,
 		},
+		{
+			name: "all key files exist but public key is an invalid format: expect new keys and request for cert",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				privKey, _, cert, kh := generateKeys("", "")
+				_ = os.WriteFile(cfg.KeyFile, privKey, 0600)
+				_ = os.WriteFile(cfg.KeyFile+pubSuffix, []byte("not a public key"), 0644)
+				_ = os.WriteFile(cfg.KeyFile+certSuffix, cert, 0644)
+				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), kh, 0644)
+				_ = os.WriteFile(cfg.KeyFile+hashSuffix, []byte("6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"), 0644)
+			},
+			assertFn:           assertExpectedFiles,
+			wantSigningRequest: true,
+		},
+		{
+			name: "all key files exist but cert is invalid: expect new keys and request for cert",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				privKey, pubKey, _, kh := generateKeys("", "")
+				_ = os.WriteFile(cfg.KeyFile, privKey, 0600)
+				_ = os.WriteFile(cfg.KeyFile+pubSuffix, pubKey, 0644)
+				_ = os.WriteFile(cfg.KeyFile+certSuffix, []byte("invalid cert"), 0644)
+				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), kh, 0644)
+				_ = os.WriteFile(cfg.KeyFile+hashSuffix, []byte("6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"), 0644)
+			},
+			assertFn:           assertExpectedFiles,
+			wantSigningRequest: true,
+		},
+		{
+			name: "valid keys and cert, but invalid known_hosts: call signing request",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				privKey, pubKey, cert, _ := generateKeys("", "")
+				_ = os.WriteFile(cfg.KeyFile, privKey, 0600)
+				_ = os.WriteFile(cfg.KeyFile+pubSuffix, pubKey, 0644)
+				_ = os.WriteFile(cfg.KeyFile+certSuffix, cert, 0644)
+				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), []byte("invalid known_hosts"), 0644)
+				_ = os.WriteFile(cfg.KeyFile+hashSuffix, []byte("6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"), 0644)
+			},
+			wantSigningRequest: true,
+			assertFn:           assertExpectedFiles,
+		},
+		{
+			name:            "Signing request fails, expect error",
+			apiResponseCode: 400,
+			wantErr:         true,
+		},
+		{
+			name: "valid keys, cert, known_hosts and agent arguments have not changed: no signing request",
+			setupFn: func(t *testing.T, cfg *ssh.Config) {
+				t.Helper()
+				privKey, pubKey, cert, kh := generateKeys("", "")
+				_ = os.WriteFile(cfg.KeyFile, privKey, 0600)
+				_ = os.WriteFile(cfg.KeyFile+pubSuffix, pubKey, 0644)
+				_ = os.WriteFile(cfg.KeyFile+certSuffix, cert, 0644)
+				_ = os.WriteFile(path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile), kh, 0644)
+				_ = os.WriteFile(cfg.KeyFile+hashSuffix, []byte("6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"), 0644)
+			},
+			wantSigningRequest: false,
+			assertFn: func(t *testing.T, cfg *ssh.Config) {
+				keyFile, err := os.ReadFile(cfg.KeyFile)
+				assert.NoError(t, err)
