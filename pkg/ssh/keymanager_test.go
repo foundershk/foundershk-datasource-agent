@@ -369,3 +369,55 @@ func TestKeyManager_EnsureKeysExist(t *testing.T) {
 			if tc.wantErr {
 				assert.Error(t, err)
 				return
+			}
+
+			require.Nil(t, err)
+
+			assert.Equal(t, tc.wantSigningRequest, *called)
+
+			if tc.assertFn != nil {
+				tc.assertFn(t, cfg)
+			}
+		})
+	}
+}
+
+func mockPDC(t *testing.T, method, path string, code int) (u *url.URL, called *bool) {
+	t.Helper()
+
+	called = new(bool)
+
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, method, r.Method)
+		assert.Equal(t, path, r.URL.Path)
+		*called = true
+
+		resp := struct {
+			KnownHosts  string `json:"known_hosts"`
+			Certificate string `json:"certificate"`
+		}{
+			KnownHosts:  knownHosts,
+			Certificate: expectedCert,
+		}
+		enc, err := json.Marshal(resp)
+		assert.NoError(t, err)
+
+		w.WriteHeader(code)
+		_, err = w.Write(enc)
+		assert.NoError(t, err)
+
+	}))
+	t.Cleanup(ts.Close)
+
+	u, _ = url.Parse(ts.URL)
+	return u, called
+}
+
+func mustParseCert(t *testing.T) []byte {
+	t.Helper()
+	block, _ := pem.Decode([]byte(expectedCert))
+	return block.Bytes
+
+}
+
+func generateKeys(validBeforeDur string, validAfterDur string) ([]byte, []byte, []byte, []byte) {
