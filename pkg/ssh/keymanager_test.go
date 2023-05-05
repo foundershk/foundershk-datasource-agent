@@ -421,3 +421,54 @@ func mustParseCert(t *testing.T) []byte {
 }
 
 func generateKeys(validBeforeDur string, validAfterDur string) ([]byte, []byte, []byte, []byte) {
+	caKey, _ := rsa.GenerateKey(rand.Reader, ssh.SSHKeySize)
+
+	// Generate a new private/public keypair for OpenSSH
+	pubKey, privKey, _ := ed25519.GenerateKey(rand.Reader)
+	sshPubKey, _ := gossh.NewPublicKey(pubKey)
+
+	pemKey := &pem.Block{
+		Type:  "OPENSSH PRIVATE KEY",
+		Bytes: edkey.MarshalED25519PrivateKey(privKey),
+	}
+	pemPrivKey := pem.EncodeToMemory(pemKey)
+
+	caSigner, _ := gossh.NewSignerFromKey(caKey)
+
+	if validBeforeDur == "" {
+		validBeforeDur = "1h"
+	}
+
+	if validAfterDur == "" {
+		validAfterDur = "-5m"
+	}
+
+	d, _ := time.ParseDuration(validBeforeDur)
+	subd, _ := time.ParseDuration(validAfterDur)
+	cert := &gossh.Certificate{
+		Key:             sshPubKey,
+		CertType:        gossh.UserCert,
+		KeyId:           "key",
+		ValidPrincipals: []string{"key"},
+		ValidBefore:     uint64(time.Now().Add(d).Unix()),
+		ValidAfter:      uint64(time.Now().Add(subd).Unix()),
+	}
+
+	_ = cert.SignCert(rand.Reader, caSigner)
+
+	kh := knownhosts.Line([]string{"test.local.address"}, sshPubKey)
+
+	fmt.Println(kh)
+
+	// public key should be in authorized_keys file format
+	return pemPrivKey, gossh.MarshalAuthorizedKey(sshPubKey), gossh.MarshalAuthorizedKey(cert), []byte(kh)
+
+}
+
+func assertExpectedFiles(t *testing.T, cfg *ssh.Config) {
+	keyFile, err := os.ReadFile(cfg.KeyFile)
+	assert.NoError(t, err)
+	assert.NotNil(t, keyFile)
+
+	pubKeyFile, err := os.ReadFile(cfg.KeyFile + pubSuffix)
+	assert.NoError(t, err)
