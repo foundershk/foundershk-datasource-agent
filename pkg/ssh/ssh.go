@@ -151,3 +151,51 @@ func (s *Client) starting(ctx context.Context) error {
 		// Do not return here: we want to keep trying to connect in case the PDC API
 		// is temporarily unavailable.
 		if s.km != nil {
+			err := s.km.CreateKeys(ctx)
+			if err != nil {
+				level.Error(s.logger).Log("msg", "could not check or generate certificate", "error", err)
+			}
+		}
+
+		return fmt.Errorf("ssh client exited")
+	})
+
+	return nil
+}
+
+func (s *Client) stopping(err error) error {
+	level.Info(s.logger).Log("msg", "stopping ssh client")
+	return err
+}
+
+// SSHFlagsFromConfig generates the array of flags to pass to the ssh command.
+// It does not stop default flags from being overidden, but only the first instance
+// of `-o` flags are used.
+func (s *Client) SSHFlagsFromConfig() ([]string, error) {
+	if s.cfg.LegacyMode {
+		level.Warn(s.logger).Log("msg", "running in legacy mode")
+		return s.cfg.Args, nil
+	}
+
+	keyFileArr := strings.Split(s.cfg.KeyFile, "/")
+	keyFileDir := strings.Join(keyFileArr[:len(keyFileArr)-1], "/")
+
+	logLevelFlag := ""
+	if s.cfg.LogLevel > 0 {
+		logLevelFlag = "-" + strings.Repeat("v", s.cfg.LogLevel)
+	}
+
+	gwURL := s.cfg.URL
+	user := fmt.Sprintf("%s@%s", s.cfg.PDC.HostedGrafanaID, gwURL.String())
+
+	// keep ssh_config parameters in a map so they can be oveeridden by the user
+	sshOptions := map[string]string{
+		"UserKnownHostsFile":  fmt.Sprintf("%s/%s", keyFileDir, KnownHostsFile),
+		"CertificateFile":     fmt.Sprintf("%s-cert.pub", s.cfg.KeyFile),
+		"ServerAliveInterval": "15",
+		"ConnectTimeout":      "1",
+	}
+
+	nonOptionFlags := []string{} // for backwards compatibility, on -v particularly
+	for _, f := range s.cfg.SSHFlags {
+		name, value, err := extractOptionFromFlag(f)
