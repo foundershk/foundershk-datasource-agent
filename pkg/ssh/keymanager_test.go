@@ -472,3 +472,18 @@ func assertExpectedFiles(t *testing.T, cfg *ssh.Config) {
 
 	pubKeyFile, err := os.ReadFile(cfg.KeyFile + pubSuffix)
 	assert.NoError(t, err)
+	assert.NotNil(t, pubKeyFile)
+
+	kfd := cfg.KeyFileDir()
+	kh, err := os.ReadFile(kfd + ssh.KnownHostsFile)
+	assert.NoError(t, err)
+	assert.Equal(t, knownHosts, string(kh))
+
+	cert, err := os.ReadFile(cfg.KeyFile + certSuffix)
+	assert.NoError(t, err)
+	assert.Equal(t, mustParseCert(t), cert)
+
+	contents, err := os.ReadFile(cfg.KeyFile + hashSuffix)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, contents)
+}
