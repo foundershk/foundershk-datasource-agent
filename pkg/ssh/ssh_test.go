@@ -72,3 +72,57 @@ func mustParseURL(s string) *url.URL {
 
 func TestStartingAndStopping(t *testing.T) {
 	// Given an SSH client
+	client := newTestClient(t, &ssh.Config{}, true)
+
+	ctx := context.Background()
+
+	// When starting the client
+	err := client.StartAsync(ctx)
+	// Then the client should be in the starting state
+	assert.NoError(t, err)
+	assert.Equal(t, "Starting", client.State().String())
+
+	// And eventually move to the running state
+	err = client.AwaitRunning(ctx)
+	assert.NoError(t, err)
+	assert.Equal(t, "Running", client.State().String())
+
+	// When stopping the service
+	client.StopAsync()
+	assert.NoError(t, err)
+
+	// Then is should eventually move to the terminated state
+	_ = client.AwaitTerminated(ctx)
+	assert.Equal(t, "Terminated", client.State().String())
+
+}
+
+// testClient returns a new SSH client with a mocked command
+// see https://npf.io/2015/06/testing-exec-command/
+func newTestClient(t *testing.T, cfg *ssh.Config, mockCmd bool) *ssh.Client {
+	t.Helper()
+	logger := log.NewNopLogger()
+	if mockCmd {
+		cfg.Args = append([]string{"-test.run=TestFakeSSHCmd", "--"}, cfg.Args...)
+		cfg.LegacyMode = true
+	}
+
+	if cfg.URL == nil {
+		cfg.URL = mustParseURL("localhost")
+	}
+
+	dir := t.TempDir()
+	cfg.KeyFile = path.Join(dir, "test_cert")
+
+	mClient := mockPDCClient{}
+	km := ssh.NewKeyManager(cfg, logger, mClient)
+
+	client := ssh.NewClient(cfg, logger, km)
+	client.SSHCmd = os.Args[0]
+	return client
+}
+
+// TestFakeSSHCmd is a test helper function that is executed by the SSH client
+func TestFakeSSHCmd(t *testing.T) {
+	assert.True(t, true)
+}
