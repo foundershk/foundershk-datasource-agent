@@ -247,3 +247,37 @@ func extractOptionFromFlag(flag string) (string, string, error) {
 	oParts := strings.Split(parts[1], "=")
 	if len(oParts) != 2 {
 		return "", "", errors.New("invalid ssh option format, expecting '-o Name=string'")
+	}
+	return oParts[0], oParts[1], nil
+}
+
+// Wraps a logger, implements io.Writer and writes to the logger.
+type loggerWriterAdapter struct {
+	logger log.Logger
+}
+
+func newLoggerWriterAdapter(logger log.Logger) loggerWriterAdapter {
+	return loggerWriterAdapter{
+		logger: logger,
+	}
+}
+
+// Implements io.Writer.
+func (adapter loggerWriterAdapter) Write(p []byte) (n int, err error) {
+	// The ssh command output is separated by \r\n and the logger escapes strings.
+	// By default, the logger output would look like this: msg="debug: some message\r\ndebug2: some message\r\n".
+	// We split the messages on \r\n and log each of them at a time to make the output look like this:
+	// msg="debug: some message"
+	// msg="debug2: some message"
+	for _, msg := range bytes.Split(p, []byte{'\r', '\n'}) {
+		if len(msg) == 0 {
+			continue
+		}
+
+		if err := level.Info(adapter.logger).Log("msg", msg); err != nil {
+			return 0, fmt.Errorf("writing log statement")
+		}
+	}
+
+	return len(p), nil
+}
