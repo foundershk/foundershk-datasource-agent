@@ -199,3 +199,51 @@ func (s *Client) SSHFlagsFromConfig() ([]string, error) {
 	nonOptionFlags := []string{} // for backwards compatibility, on -v particularly
 	for _, f := range s.cfg.SSHFlags {
 		name, value, err := extractOptionFromFlag(f)
+		if err != nil {
+			return nil, err
+		}
+		if name == "" {
+			nonOptionFlags = append(nonOptionFlags, f)
+			continue
+		}
+		sshOptions[name] = value
+	}
+
+	// make options ordering deterministic
+	optionsList := []string{}
+	for o := range sshOptions {
+		optionsList = append(optionsList, o)
+	}
+	sort.Strings(optionsList)
+
+	result := []string{
+		"-i",
+		s.cfg.KeyFile,
+		user,
+		"-p",
+		fmt.Sprintf("%d", s.cfg.Port),
+		"-R", "0",
+	}
+
+	for _, o := range optionsList {
+		result = append(result, "-o", fmt.Sprintf("%s=%s", o, sshOptions[o]))
+	}
+
+	if logLevelFlag != "" {
+		result = append(result, logLevelFlag)
+	}
+
+	result = append(result, nonOptionFlags...)
+
+	return result, nil
+}
+
+func extractOptionFromFlag(flag string) (string, string, error) {
+	parts := strings.SplitN(flag, " ", 2)
+	if parts[0] != "-o" {
+		return "", "", nil
+	}
+
+	oParts := strings.Split(parts[1], "=")
+	if len(oParts) != 2 {
+		return "", "", errors.New("invalid ssh option format, expecting '-o Name=string'")
