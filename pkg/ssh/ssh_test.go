@@ -126,3 +126,55 @@ func newTestClient(t *testing.T, cfg *ssh.Config, mockCmd bool) *ssh.Client {
 func TestFakeSSHCmd(t *testing.T) {
 	assert.True(t, true)
 }
+
+// Building this out to verify behaviour, not exactly sure that the function is
+// hanging off the right struct or organised appropriately.
+func TestClient_SSHArgs(t *testing.T) {
+	t.Run("defaults", func(t *testing.T) {
+		cfg := ssh.DefaultConfig()
+
+		cfg.URL = mustParseURL("host.grafana.net")
+
+		cfg.PDC = pdc.Config{
+			HostedGrafanaID: "123",
+		}
+
+		sshClient := newTestClient(t, cfg, false)
+
+		result, err := sshClient.SSHFlagsFromConfig()
+
+		assert.Nil(t, err)
+		assert.Equal(t, strings.Split(fmt.Sprintf("-i %s 123@host.grafana.net -p 22 -R 0 -o CertificateFile=%s -o ConnectTimeout=1 -o ServerAliveInterval=15 -o UserKnownHostsFile=%s -vv", cfg.KeyFile, cfg.KeyFile+certSuffix, path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile)), " "), result)
+	})
+
+	t.Run("legacy args (deprecated)", func(t *testing.T) {
+		expectedArgs := []string{"test", "ok"}
+		cfg := ssh.DefaultConfig()
+		cfg.LegacyMode = true
+		cfg.URL = mustParseURL("localhost")
+		cfg.Args = expectedArgs
+
+		sshClient := newTestClient(t, cfg, false)
+		result, err := sshClient.SSHFlagsFromConfig()
+
+		assert.Nil(t, err)
+		assert.Equal(t, expectedArgs, result)
+	})
+
+	t.Run("ssh-flags get appended to command", func(t *testing.T) {
+		cfg := ssh.DefaultConfig()
+
+		cfg.URL = mustParseURL("host.grafana.net")
+
+		cfg.PDC = pdc.Config{
+			HostedGrafanaID: "123",
+		}
+
+		cfg.SSHFlags = []string{
+			"-vvv",
+			"-o TestOption=2",
+			"-o PermitRemoteOpen=host:123 host:456",
+			"-o ConnectTimeout=3",
+		}
+
+		sshClient := newTestClient(t, cfg, false)
