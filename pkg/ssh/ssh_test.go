@@ -178,3 +178,62 @@ func TestClient_SSHArgs(t *testing.T) {
 		}
 
 		sshClient := newTestClient(t, cfg, false)
+		result, err := sshClient.SSHFlagsFromConfig()
+
+		assert.Nil(t, err)
+		expected := []string{
+			"-i",
+			cfg.KeyFile,
+			"123@host.grafana.net",
+			"-p",
+			"22",
+			"-R",
+			"0",
+			"-o", fmt.Sprintf("CertificateFile=%s", cfg.KeyFile+certSuffix),
+			"-o", "ConnectTimeout=3",
+			"-o", "PermitRemoteOpen=host:123 host:456",
+			"-o", "ServerAliveInterval=15",
+			"-o", "TestOption=2",
+			"-o", fmt.Sprintf("UserKnownHostsFile=%s", path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile)),
+			"-vv",
+			"-vvv",
+		}
+		assert.Equal(t, expected, result)
+
+	})
+
+	t.Run("allow updating the log verbosity", func(t *testing.T) {
+		cfg := ssh.DefaultConfig()
+		cfg.LogLevel = 0
+
+		sshClient := newTestClient(t, cfg, false)
+		result, err := sshClient.SSHFlagsFromConfig()
+
+		assert.Nil(t, err)
+		expected := []string{
+			"-i",
+			cfg.KeyFile,
+			"@localhost",
+			"-p",
+			"22",
+			"-R",
+			"0",
+			"-o", fmt.Sprintf("CertificateFile=%s", cfg.KeyFile+certSuffix),
+			"-o", "ConnectTimeout=1",
+			"-o", "ServerAliveInterval=15",
+			"-o", fmt.Sprintf("UserKnownHostsFile=%s", path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile)),
+		}
+		assert.Equal(t, expected, result)
+
+		cfg.LogLevel = 2
+
+		sshClient = newTestClient(t, cfg, false)
+		result, err = sshClient.SSHFlagsFromConfig()
+
+		assert.Nil(t, err)
+		expected = []string{
+			"-i",
+			cfg.KeyFile,
+			"@localhost",
+			"-p",
+			"22",
