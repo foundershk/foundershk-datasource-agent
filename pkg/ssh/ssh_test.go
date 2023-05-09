@@ -237,3 +237,52 @@ func TestClient_SSHArgs(t *testing.T) {
 			"@localhost",
 			"-p",
 			"22",
+			"-R",
+			"0",
+			"-o", fmt.Sprintf("CertificateFile=%s", cfg.KeyFile+certSuffix),
+			"-o", "ConnectTimeout=1",
+			"-o", "ServerAliveInterval=15",
+			"-o", fmt.Sprintf("UserKnownHostsFile=%s", path.Join(cfg.KeyFileDir(), ssh.KnownHostsFile)),
+			"-vv",
+		}
+		assert.Equal(t, expected, result)
+
+	})
+
+	t.Run("errors on invalid option flag", func(t *testing.T) {
+		cfg := ssh.DefaultConfig()
+
+		cfg.URL = mustParseURL("host.grafana.net")
+		cfg.PDC = pdc.Config{
+			HostedGrafanaID: "123",
+		}
+
+		cfg.SSHFlags = []string{
+			"-o TestOption invalid format",
+		}
+
+		sshClient := newTestClient(t, cfg, false)
+		_, err := sshClient.SSHFlagsFromConfig()
+		assert.NotNil(t, err)
+		assert.Equal(t, err.Error(), "invalid ssh option format, expecting '-o Name=string'")
+	})
+}
+
+type mockPDCClient struct {
+}
+
+func (m mockPDCClient) SignSSHKey(_ context.Context, _ []byte) (*pdc.SigningResponse, error) {
+
+	block, _ := pem.Decode([]byte(certPEM))
+	pk, _, _, _, err := gossh.ParseAuthorizedKey(block.Bytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse public key: %w", err)
+	}
+
+	cert, _ := pk.(*gossh.Certificate)
+
+	return &pdc.SigningResponse{
+		KnownHosts:  []byte("known hosts"),
+		Certificate: *cert,
+	}, nil
+}
