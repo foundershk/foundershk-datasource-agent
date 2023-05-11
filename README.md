@@ -4,4 +4,4 @@ The foundershk Private Datasource Connect Agent allows connecting private dataso
 
 ## Installation
 
-Follow installation and running instructions in the 
+Follow installation and running instructions in the [Grafana Labs Documentation](https://grafana.com/docs/grafana-cloud/da
