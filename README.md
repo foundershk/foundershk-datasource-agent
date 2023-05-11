@@ -4,4 +4,4 @@ The foundershk Private Datasource Connect Agent allows connecting private dataso
 
 ## Installation
 
-Follo
+Follow installation and running instructions in the 
