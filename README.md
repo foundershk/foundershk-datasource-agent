@@ -12,4 +12,5 @@ Use the `-log.level` flag. Run the agent with the `-help` flag to see the possib
 
 | go log level | ssh log level    |
 | ------------ | ---------------- |
-| `error`    
+| `error`      | 0 (`-v` not set) |
+| `warn`       | 0 (`-v` not set) |
