@@ -10,4 +10,6 @@ Follow installation and running instructions in the [Grafana Labs Documentation]
 
 Use the `-log.level` flag. Run the agent with the `-help` flag to see the possible values.
 
-| go log level | ssh log level  
+| go log level | ssh log level    |
+| ------------ | ---------------- |
+| `error`    
