@@ -14,3 +14,5 @@ Use the `-log.level` flag. Run the agent with the `-help` flag to see the possib
 | ------------ | ---------------- |
 | `error`      | 0 (`-v` not set) |
 | `warn`       | 0 (`-v` not set) |
+| `info`       | 0 (`-v` not set) |
+| `
