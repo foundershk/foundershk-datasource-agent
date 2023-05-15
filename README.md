@@ -19,4 +19,8 @@ Use the `-log.level` flag. Run the agent with the `-help` flag to see the possib
 
 ## DEV flags
 
-Flags prefixed with `-dev` are used for local development 
+Flags prefixed with `-dev` are used for local development and can be removed at any time.
+
+## Releasing
+
+Crea
