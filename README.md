@@ -19,4 +19,4 @@ Use the `-log.level` flag. Run the agent with the `-help` flag to see the possib
 
 ## DEV flags
 
-Flags prefixed wi
+Flags prefixed with `-dev` are used for local development 
