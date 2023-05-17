@@ -23,4 +23,4 @@ Flags prefixed with `-dev` are used for local development and can be removed at 
 
 ## Releasing
 
-Crea
+Create public releases with `gh release create vX.X.
