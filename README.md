@@ -25,4 +25,4 @@ Flags prefixed with `-dev` are used for local development and can be removed at 
 
 Create public releases with `gh release create vX.X.X --generate-notes`
 
-Releases are managed using [goreleaser](https://goreleaser.com/). Use the followin
+Releases are managed using [goreleaser](https://goreleaser.com/). Use the following command to build binaries on your local machin
