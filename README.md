@@ -23,4 +23,6 @@ Flags prefixed with `-dev` are used for local development and can be removed at 
 
 ## Releasing
 
-Create public releases with `gh release create vX.X.
+Create public releases with `gh release create vX.X.X --generate-notes`
+
+Releases are managed using [gorelea
