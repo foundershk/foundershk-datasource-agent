@@ -33,4 +33,6 @@ goreleaser build --snapshot --rm-dist
 
 If you want the docker image locally, you can run
 
-`
+````
+goreleaser release --snapshot --rm-dist
+````
