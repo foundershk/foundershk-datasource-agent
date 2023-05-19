@@ -29,4 +29,8 @@ Releases are managed using [goreleaser](https://goreleaser.com/). Use the follow
 
 ````
 goreleaser build --snapshot --rm-dist
-``
+````
+
+If you want the docker image locally, you can run
+
+`
